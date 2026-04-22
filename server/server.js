@@ -16,12 +16,14 @@ import academicRoutes from './routes/academicRoutes.js';
 import facilityRoutes from './routes/facilityRoutes.js';
 import academicAdvancedRoutes from './routes/academicAdvancedRoutes.js';
 import operationsRoutes from './routes/operationsRoutes.js';
+import advancedIntegrationsRoutes from './routes/advancedIntegrationsRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
 import { auditLogger } from './middlewares/auditLogger.js';
 import rateLimit from 'express-rate-limit';
 
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
+  max: 10000, // Limit each IP to 10000 requests per windowMs (increased for dev/testing)
   message: { message: 'Too many requests from this IP, please try again after 15 minutes' },
   standardHeaders: true,
   legacyHeaders: false,
@@ -100,6 +102,8 @@ app.use('/api/academics', academicRoutes);
 app.use('/api/facilities', facilityRoutes);
 app.use('/api/advanced', academicAdvancedRoutes);
 app.use('/api/operations', operationsRoutes);
+app.use('/api/integrations', advancedIntegrationsRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Basic Route
 app.get('/', (req, res) => {

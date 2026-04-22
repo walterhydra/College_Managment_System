@@ -3,10 +3,11 @@ import { Menu, X, Bell, User } from 'lucide-react';
 import { Link, Outlet } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from 'react-i18next';
+import AIChatbot from '../AIChatbot';
 
 const AppShell = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const { user, logout } = useAuth();
+  const { user, logoutUser } = useAuth();
   const { t, i18n } = useTranslation();
 
   const handleLanguageChange = (e) => {
@@ -43,11 +44,15 @@ const AppShell = () => {
           </button>
           <div className="flex items-center gap-3 pl-4 border-l border-slate-700">
             <div className="text-right hidden sm:block">
-              <p className="text-sm font-medium">Hi, Student</p>
-              <p className="text-xs text-slate-400">190410101010</p>
+              <p className="text-sm font-medium">
+                {user?.profile?.firstName ? `Hi, ${user.profile.firstName}` : `Hi, ${user?.role ? user.role.charAt(0).toUpperCase() + user.role.slice(1) : 'User'}`}
+              </p>
+              <p className="text-xs text-slate-400">
+                {user?.profile?.enrollmentNo || user?.email || ''}
+              </p>
             </div>
-            <div className="w-9 h-9 rounded-full bg-teal flex items-center justify-center text-white font-bold cursor-pointer hover:opacity-90 transition-opacity select-none">
-              <User size={20} />
+            <div className="w-9 h-9 rounded-full bg-teal flex items-center justify-center text-white font-bold cursor-pointer hover:opacity-90 transition-opacity select-none uppercase">
+              {user?.profile?.firstName ? user.profile.firstName.charAt(0) : <User size={20} />}
             </div>
           </div>
         </div>
@@ -104,6 +109,7 @@ const AppShell = () => {
                   { name: 'Academics & Study', path: '/academics' },
                   { name: 'Examinations', path: '/exams' },
                   { name: 'Placements & Career', path: '/placements' },
+                  { name: 'Internship Portal', path: '/internships' },
                   { name: 'Fees & Finance', path: '/fees' },
                   { name: 'Hostel & Mess', path: '/hostel' },
                   { name: 'Transport', path: '/transport' },
@@ -123,7 +129,7 @@ const AppShell = () => {
             
             <div className="mt-auto pt-6 pb-2 border-t border-slate-200 dark:border-slate-800">
               <button 
-                onClick={logout}
+                onClick={logoutUser}
                 className="w-full px-3 py-2 text-left rounded-md hover:bg-parulRed/10 hover:text-parulRed font-medium text-slate-700 dark:text-slate-300 transition-colors"
               >
                 Logout
@@ -133,10 +139,13 @@ const AppShell = () => {
         </aside>
 
         {/* Main Content Area */}
-        <main className="flex-1 overflow-y-auto bg-slate-50 dark:bg-slate-900 p-4 lg:p-8">
+        <main className="flex-1 overflow-y-auto bg-slate-50 dark:bg-slate-900 p-4 lg:p-8 relative">
           <Outlet />
         </main>
       </div>
+      
+      {/* Global Floating Components */}
+      {user && user.role !== 'admin' && <AIChatbot />}
     </div>
   );
 };

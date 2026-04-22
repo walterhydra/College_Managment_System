@@ -131,3 +131,40 @@ export const getBloodGroupDirectory = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// Mock in-memory database for grievances
+let grievancesDb = [
+  { id: 1, title: 'Hostel Wi-Fi issue in Block A', status: 'Pending', date: '2026-04-21', student: 'Milan Patel' },
+  { id: 2, title: 'Library AC not working', status: 'Pending', date: '2026-04-20', student: 'Rahul Sharma' },
+  { id: 3, title: 'Canteen food hygiene concern', status: 'Pending', date: '2026-04-19', student: 'Anita Desai' }
+];
+
+// @desc    Get all active grievances
+// @route   GET /api/operations/grievances
+// @access  Private (Admin)
+export const getGrievances = async (req, res) => {
+  try {
+    const activeGrievances = grievancesDb.filter(g => g.status === 'Pending');
+    res.json(activeGrievances);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// @desc    Resolve a grievance
+// @route   POST /api/operations/grievances/:id/resolve
+// @access  Private (Admin)
+export const resolveGrievance = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const grievance = grievancesDb.find(g => g.id === parseInt(id));
+    if (grievance) {
+      grievance.status = 'Resolved';
+      res.json({ message: 'Grievance resolved successfully', grievance });
+    } else {
+      res.status(404).json({ message: 'Grievance not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

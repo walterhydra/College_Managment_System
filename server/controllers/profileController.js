@@ -5,10 +5,10 @@ import Profile from '../models/Profile.js';
 // @access  Private
 export const updateProfile = async (req, res) => {
   try {
-    const profile = await Profile.findOne({ user: req.user._id });
+    let profile = await Profile.findOne({ user: req.user._id });
 
     if (!profile) {
-      return res.status(404).json({ message: 'Profile not found' });
+      profile = new Profile({ user: req.user._id });
     }
 
     const {

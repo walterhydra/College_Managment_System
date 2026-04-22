@@ -53,12 +53,13 @@ export default function Profile() {
 
       const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/profile`, {
         method: 'PUT',
-        // In real app, we send credentials, but doing a basic endpoint mock via auth
+        credentials: 'include',
         body: data,
       });
 
       if (!response.ok) {
-        throw new Error('Failed to update profile');
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || 'Failed to update profile');
       }
 
       const updatedProfile = await response.json();

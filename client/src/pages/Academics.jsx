@@ -82,7 +82,7 @@ export default function Academics() {
                    <div className="w-full bg-muted rounded-full h-2.5 overflow-hidden">
                      <div 
                        className={`h-2.5 rounded-full ${color.split(' ')[0]}`}
-                       style={{ width: \`\${percentage}%\` }}
+                       style={{ width: `${percentage}%` }}
                      ></div>
                    </div>
                    <p className="text-xs text-muted-foreground text-right">

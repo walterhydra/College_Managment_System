@@ -8,7 +8,9 @@ import {
   bookFacility,
   getActiveNotices,
   getLostAndFound,
-  getBloodGroupDirectory
+  getBloodGroupDirectory,
+  getGrievances,
+  resolveGrievance
 } from '../controllers/operationsController.js';
 
 const router = express.Router();
@@ -26,5 +28,8 @@ router.post('/booking', protect, bookFacility);
 // Admin / Super routes
 router.post('/smart-timetable', protect, admin, generateSmartTimetable);
 router.post('/emergency-alert', protect, admin, broadcastEmergencyAlert);
+
+router.get('/grievances', protect, admin, getGrievances);
+router.post('/grievances/:id/resolve', protect, admin, resolveGrievance);
 
 export default router;

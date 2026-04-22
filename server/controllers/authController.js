@@ -44,6 +44,21 @@ export const loginUser = async (req, res) => {
         });
       }
 
+      // IP-Restriction check (Example: Allow only from specific campus ranges for students)
+      const campusIPs = ['127.0.0.1', '::1', '::ffff:127.0.0.1']; // Defaults for dev
+      const globalRestrictToggle = process.env.CAMPUS_IP_RESTRICT === 'true';
+
+      if (globalRestrictToggle && user.role === 'student' && !campusIPs.includes(req.ip)) {
+        await ActivityLog.create({
+          user: user._id,
+          action: 'LOGIN_BLOCKED',
+          description: 'Login blocked due to IP location restriction',
+          ipAddress: req.ip || 'Unknown IP',
+          userAgent: req.headers['user-agent'] || 'Unknown Device',
+        });
+        return res.status(403).json({ message: 'Login denied: Campus network required.' });
+      }
+
       // Create session array
       const session = await Session.create({
         user: user._id,
