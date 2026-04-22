@@ -1,8 +1,4 @@
 <div align="center">
-  <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070&auto=format&fit=crop" alt="College ERP Banner" width="100%" style="border-radius:15px"/>
-  
-  <br/><br/>
-  
   <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=34&duration=3000&pause=1000&color=2563EB&center=true&vCenter=true&width=800&lines=Modern+College+ERP+System;Transforming+Campus+Management;Empowering+Students+%26+Faculty" alt="Typing SVG" />
 
   <p>
